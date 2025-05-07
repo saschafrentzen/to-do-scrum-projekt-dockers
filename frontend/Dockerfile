@@ -1,18 +1,12 @@
-# Build Stage
-FROM node:18 AS builder
+FROM node:18
 
 WORKDIR /app
-COPY frontend/package*.json ./
+
+COPY backend/package*.json ./
 RUN npm install
 
-COPY frontend/ ./
-RUN npm run build
+COPY backend/ ./
 
-# Production Stage
-FROM nginx:alpine
-
-COPY --from=builder /app/build /usr/share/nginx/html
-
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+EXPOSE 5000
+CMD ["npm", "start"]
 
